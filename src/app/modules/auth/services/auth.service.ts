@@ -5,7 +5,8 @@ import {Observable, of, tap} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 interface AuthResponse {
-  token: string;
+  id : number;
+  email: string;
   role: string;
   username: string;
 }
@@ -17,7 +18,7 @@ export class AuthService {
 
 
   private isLoggedIn: boolean = false;
-  private apiUrl = 'auth/login';
+  private apiUrl = '/api/auth/signin';
   constructor(private http: ApiHandlerService) { }
 
   login(username: string, password: string): Observable<boolean> {
@@ -28,7 +29,8 @@ export class AuthService {
         tap((response:AuthResponse) => {
 
           this.isLoggedIn = true;
-          this.saveCredentials(response.token, response.role, response.username);
+          console.log(response);
+          this.saveCredentials(response.email, response.role, response.username);
         }),
         catchError(error => {
           console.error('Login failed:', error["message"]);

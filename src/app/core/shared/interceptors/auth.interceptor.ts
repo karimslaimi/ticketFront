@@ -6,33 +6,25 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse,
-  HttpResponse
 } from '@angular/common/http';
-import { Observable, catchError, finalize, throwError, from, lastValueFrom } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { GlobalService } from '../global.service';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router, private globalService: GlobalService) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     const fingerprint =  getBrowserFingerprint();
 
-    let accessToken = ''
-    if (localStorage.getItem('token')) {
-      accessToken = localStorage.getItem('token') || ''
-    }
-    if (accessToken) {
-      req = this.AddBrowserIdAndToken(req, fingerprint, accessToken);
+    if (this.authService.isAuthenticated()) {
+      req = this.AddBrowserIdAndToken(req, fingerprint, this.authService.getJwtToken());
       req.headers.append('Content-Type', 'application/json');
     } else {
-      req = this.AddBrowserId(req, fingerprint);
-      req.headers.append('Content-Type', 'application/json');
+      this.router.navigate(["/login"]);
     }
     return next.handle(req).pipe(catchError(error => {
       if(error.status == 401 && error.statusText == 'Unauthorized'){
