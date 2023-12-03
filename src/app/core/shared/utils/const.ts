@@ -18,10 +18,13 @@ resetPassword:'users/resetPassword/',
 forgetPassword:'users/forgotPassword',
 getBrowserDetail:'users/getBrowserDetail/',
 setBrowserDetail:'users/setBrowserDetail',
-users: 'users',
-deleteUser: 'users/deleteUser/',
+
+users: '/api/user/list',
+createUser: '/api/user/add',
+deleteUser: '/api/user/delete/',
+
+
 editUser: 'users/updateUser',
-createUser: 'users/createUser',
 getRoles:'roles',
 getPermissions: 'permissions',
 getAllPermissionsByRole: 'permissions/getAllPermissionsByRole',

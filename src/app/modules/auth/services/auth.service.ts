@@ -7,8 +7,9 @@ import {catchError} from "rxjs/operators";
 interface AuthResponse {
   id : number;
   email: string;
-  role: string;
+  roles: string;
   username: string;
+  token:string;
 }
 
 @Injectable({
@@ -30,7 +31,7 @@ export class AuthService {
 
           this.isLoggedIn = true;
           console.log(response);
-          this.saveCredentials(response.email, response.role, response.username);
+          this.saveCredentials(response.token, response.email, response.roles, response.username);
         }),
         catchError(error => {
           console.error('Login failed:', error["message"]);
@@ -40,11 +41,12 @@ export class AuthService {
       );
   }
 
-  private saveCredentials(token: string, role: string, username: string): void {
+  private saveCredentials(token: string, email: string, role: string, username: string): void {
     // Store the credentials in a secure way, such as using local storage or a secure cookie
     localStorage.setItem('jwtToken', token);
     localStorage.setItem('userRole', role);
     localStorage.setItem('username', username);
+    localStorage.setItem("email", email);
   }
 
   logout(): void {
@@ -52,11 +54,12 @@ export class AuthService {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('userRole');
     localStorage.removeItem('username');
+    localStorage.removeItem('email');
     this.isLoggedIn = false;
   }
 
   isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    return this.isLoggedIn || localStorage.getItem("jwtToken") != null;
   }
 
   getJwtToken(): string | null {

@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { API_URL, ApiMethod } from './const';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { catchError } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {API_URL, ApiMethod} from './const';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environments/environment';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiHandlerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   requestCall(api: string, method: ApiMethod, params?: string, data?: any) {
     let response;
@@ -20,8 +21,7 @@ export class ApiHandlerService {
         if (params == '') {
           response = this.http.get(`${API_URL}${api}`)
             .pipe(catchError(err => this.handleError(err, this)));
-        }
-        else {
+        } else {
           response = this.http.get(`${API_URL}${api}${params}`)
             .pipe(catchError(err => this.handleError(err, this)));
         }
@@ -35,7 +35,8 @@ export class ApiHandlerService {
           .pipe(catchError(err => this.handleError(err, this)));
         break;
       case ApiMethod.DELETE:
-        response = this.http.delete(`${API_URL}${api}${params}`)
+        let url = `${API_URL}${api}${params}`;
+        response = this.http.delete(url)
           .pipe(catchError(err => this.handleError(err, this)));
         break;
       default:
@@ -46,7 +47,7 @@ export class ApiHandlerService {
   }
 
 
-  handleError(err:any,self:any){
-return err
+  handleError(err: any, self: any) {
+    return err
   }
 }

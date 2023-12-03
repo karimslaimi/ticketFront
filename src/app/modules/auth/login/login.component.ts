@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SocketService } from 'src/app/core/shared/socket.service';
 import {AuthService} from '../services/auth.service'
 import { navItems } from 'src/app/core/default-layout/_nav';
 
@@ -18,7 +17,7 @@ export class LoginComponent {
   });
   error: string = "";
   isLoading: boolean = false;
-  constructor(private authService:AuthService, private router: Router, private socket: SocketService) {
+  constructor(private authService:AuthService, private router: Router) {
     this.loginForm.valueChanges.subscribe((changes:any)=>{
       this.isLoading = false;
       this.error = "";

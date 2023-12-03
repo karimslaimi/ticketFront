@@ -17,41 +17,23 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private router: Router, private authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    const fingerprint =  getBrowserFingerprint();
-
-    if (this.authService.isAuthenticated()) {
-      req = this.AddBrowserIdAndToken(req, fingerprint, this.authService.getJwtToken());
-      req.headers.append('Content-Type', 'application/json');
-    } else {
-      this.router.navigate(["/login"]);
+    let token = this.authService.getJwtToken();
+    if (token) {
+      const clonedRequest = req.clone({
+        headers: req.headers.set('Authorization', "Bearer " + token)
+      });
+      clonedRequest.headers.set('Content-Type', 'application/json');
+      clonedRequest.headers.set("Access-Control-Allow-Origin", "*");
+     return next.handle(clonedRequest);
     }
-    return next.handle(req).pipe(catchError(error => {
-      if(error.status == 401 && error.statusText == 'Unauthorized'){
-        localStorage.clear()
-        window.location.reload();
-      }else{
-        return throwError(() => error);
-      }
 
-    }))
+    return next.handle(req);
   }
-  AddBrowserIdAndToken(request: HttpRequest<any>, fingerprint: string, token: string) {
-    debugger
-    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if(!userInfo){userInfo = {user_id:null}}
+  AddBrowserIdAndToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`,
-        'fingerprint': String(fingerprint),
-        'userId':String(userInfo.user_id)
-      }
-    });
-  }
-  AddBrowserId(request: HttpRequest<any>, fingerprint: string) {
-    return request.clone({
-      setHeaders: {
-        'fingerprint': String(fingerprint)
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       }
     });
   }

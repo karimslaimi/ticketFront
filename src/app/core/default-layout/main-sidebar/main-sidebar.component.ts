@@ -9,12 +9,14 @@ import {AuthService} from "../../../modules/auth/services/auth.service";
 })
 export class MainSidebarComponent implements OnInit {
   public navItems = navItems;
+  username:string="";
 
 
   constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
     let role = this.authService.getUserRole()??"ADMIN";
+    this.username = this.authService.getUsername();
     switch (role) {
       case 'ADMIN':
         this.navItems = adminItems;

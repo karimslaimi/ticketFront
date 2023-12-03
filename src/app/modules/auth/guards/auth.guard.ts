@@ -12,7 +12,6 @@ export class authGuard  {
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    debugger
     let token = this.authService.getJwtToken();
     if (token && state.url != '/login') {
       return true;
