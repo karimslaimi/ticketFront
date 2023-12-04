@@ -20,7 +20,7 @@ export class UsersService {
   }
 
   editUser(data: any) {
-    return this.http.requestCall(API_ENDPOINTS.editUser, ApiMethod.POST, '', data)
+    return this.http.requestCall(API_ENDPOINTS.updateUser, ApiMethod.PUT, '', data)
   }
 
   createUser(data: any) {

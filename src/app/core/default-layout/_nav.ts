@@ -35,7 +35,7 @@ export const userItems:any[] = [
   {
     name: 'My Tickets',
     url: '/tickets',
-    iconComponent: { name: 'nav-icon fas fa-tickets' }
+    iconComponent: { name: 'nav-icon fas fa-solid fa-ticket-alt' }
   },
 ]
 
@@ -43,6 +43,6 @@ export const techItems:any[] = [
   {
     name: 'Tickets',
     url: '/tickets',
-    iconComponent: { name: 'nav-icon fas fa-tickets' }
+    iconComponent: { name: 'nav-icon fas fa-solid fa-ticket-alt' }
   },
 ]

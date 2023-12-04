@@ -22,7 +22,9 @@ setBrowserDetail:'users/setBrowserDetail',
 users: '/api/user/list',
 createUser: '/api/user/add',
 deleteUser: '/api/user/delete/',
+updateUser: '/api/user/update/',
 
+tickets: '/api/tickets/list',
 
 editUser: 'users/updateUser',
 getRoles:'roles',

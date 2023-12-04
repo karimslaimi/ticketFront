@@ -13,6 +13,7 @@ import Swal from 'sweetalert2'
 export class UserComponent implements OnInit {
   @ViewChild('closeModal') closeModal: ElementRef
 
+
   userForm: any;
   allUsers: any = [];
   userRoles: any = [];
@@ -64,9 +65,9 @@ export class UserComponent implements OnInit {
 
   setForm() {
     this.userForm = new FormGroup({
-      role: new FormControl(null, [Validators.required]),
-      email: new FormControl(null, [Validators.required]),
-      username: new FormControl(null, [Validators.required]),
+      role: new FormControl({ value: '', disabled: this.editPopup }, [Validators.required]),
+      email: new FormControl({ value: '', disabled: this.editPopup }, [Validators.required]),
+      username: new FormControl({ value: '', disabled: this.editPopup }, [Validators.required]),
       password: new FormControl(null, [Validators.required]),
       password_confirmation: new FormControl(null, [Validators.required,]),
     }, {validators: this.passwordMatchValidator});
@@ -144,38 +145,42 @@ export class UserComponent implements OnInit {
   }
 
   update() {
+    if (!this.validForm() || this.userForm.invalid) {
+      return
+    }
     this.formSubmissionFlag = true;
-    const formData: any = new FormData();
-    formData.append('user_id', this.userForm.value.user_id);
-    formData.append('countryId', 1);
-    formData.append('companyId', 1);
-    formData.append('roleId', this.userForm.value.roleId);
-    formData.append('email', this.userForm.value.email);
-    formData.append('username', this.userForm.value.username);
-    formData.append('phone', this.userForm.value.phone);
-    formData.append('userImage', this.userForm.value.userImage);
-    formData.append('userStatus', this.userForm.value.userStatus);
-    formData.append('loginStatus', this.userForm.value.loginStatus);
-    this.formSubmissionFlag = false;
+    const formData: any = {};
+
+    formData.role = this.userForm.value.role;
+    formData.email = this.userForm.value.email;
+    formData.password = this.userForm.value.password;
+    formData.password_confirmation = this.userForm.value.password_confirmation;
+    formData.username = this.userForm.value.username;
+    this.userForm.reset();
     this.closeModal.nativeElement.click();
-    Swal.fire({
-      title: '',
-      text: 'User updated Successfully',
-      icon: 'success',
-      confirmButtonText: 'Close'
-    });
-    // this.usersService.editUser(formData)?.subscribe((res: any) => {
-    //   if (res.status === 'success') {
-    //     this.formSubmissionFlag  = false;
-    //     this.closeModal.nativeElement.click();
-    //     Swal.fire({
-    //       title: '',
-    //       text: 'User updated Successfully',
-    //       icon: 'success',
-    //       confirmButtonText: 'Close'
-    //     })
-    //   }
-    // })
+    this.formSubmissionFlag = false;
+
+     this.usersService.editUser(formData)?.subscribe({
+       next:(res:any) =>{
+      if (res) {
+        this.formSubmissionFlag = false;
+        this.closeModal.nativeElement.click();
+        Swal.fire({
+          title: '',
+          text: 'User updated Successfully',
+          icon: 'success',
+          confirmButtonText: 'Close'
+        })
+      }
+    } ,error:(error: string) =>
+      Swal.fire({
+        title: 'Error!',
+        text: 'There is an error from backend side.\n' + error,
+        icon: 'error',
+        confirmButtonText: 'Close'
+
+      })
+  })
   }
 
   delete(i: any) {

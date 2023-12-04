@@ -106,7 +106,7 @@
             <div class="form-group">
               <label for="username">User Name</label>
               <input
-                type="text"
+                type="text"   [readonly]="editPopup"
                 formControlName="username"
                 class="form-control"
                 [ngClass]="{ 'is-invalid': errors.includes('username') }"
@@ -125,7 +125,7 @@
             <div class="form-group">
               <label for="email">Email</label>
               <input
-                type="email"
+                type="email"   [readonly]="editPopup"
                 class="form-control"
                 formControlName="email"
                 [ngClass]="{ 'is-invalid': errors.includes('email') }"
@@ -142,7 +142,7 @@
             <div class="form-group">
               <label for="role">Roles</label>
               <ng-select
-                id="role"
+                id="role"  [readonly]="editPopup"
                 [ngClass]="{ 'is-invalid': errors.includes('selectedRoles') }"
                 [multiple]="false"
                 [closeOnSelect]="true"
@@ -162,7 +162,7 @@
               >{{ formError.selectedRoles }}</span
               >
             </div>
-            <div class="form-group" *ngIf="!editPopup">
+            <div class="form-group">
               <label for="password">Password</label>
               <input
                 type="password"
@@ -179,7 +179,7 @@
                 >{{ formError.password }}</span
               >
             </div>
-            <div class="form-group" *ngIf="!editPopup">
+            <div class="form-group">
               <label for="password">Password Confirmation</label>
               <input
                 type="password"

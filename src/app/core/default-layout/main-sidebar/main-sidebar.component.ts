@@ -24,7 +24,7 @@ export class MainSidebarComponent implements OnInit {
       case 'TECHNICIEN':
         this.navItems = techItems;
         break;
-      case 'USER':
+      case 'EMPLOYEE':
         this.navItems = userItems;
         break;
     }
