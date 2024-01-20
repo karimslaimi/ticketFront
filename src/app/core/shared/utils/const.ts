@@ -19,12 +19,13 @@ forgetPassword:'users/forgotPassword',
 getBrowserDetail:'users/getBrowserDetail/',
 setBrowserDetail:'users/setBrowserDetail',
 
-users: '/api/user/list',
+users: '/api/user/ListTicket',
 createUser: '/api/user/add',
 deleteUser: '/api/user/delete/',
 updateUser: '/api/user/update/',
 
-tickets: '/api/tickets/list',
+tickets: '/api/tickets/ListTicket',
+deleteTicket: '/api/tickets/delete/',
 
 editUser: 'users/updateUser',
 getRoles:'roles',

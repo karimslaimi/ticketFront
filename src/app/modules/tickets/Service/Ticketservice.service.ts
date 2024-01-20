@@ -11,7 +11,11 @@ export class TicketserviceService {
 
 
   getTickets(){
-    return this.http.requestCall(API_ENDPOINTS.tickets, ApiMethod.GET,'');
+    return this.http.requestCall(API_ENDPOINTS.tickets, ApiMethod.GET);
+  }
+
+  deleteTicket(id:number){
+    return this.http.requestCall(API_ENDPOINTS.deleteTicket+id,ApiMethod.DELETE);
   }
 
 }

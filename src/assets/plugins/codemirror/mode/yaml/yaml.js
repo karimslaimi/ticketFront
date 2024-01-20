@@ -41,7 +41,7 @@ CodeMirror.defineMode("yaml", function() {
         if(stream.match('---')) { return "def"; }
         /* document end */
         if (stream.match('...')) { return "def"; }
-        /* array list item */
+        /* array ListTicket item */
         if (stream.match(/\s*-\s+/)) { return 'meta'; }
       }
       /* inline pairs/lists */
@@ -57,7 +57,7 @@ CodeMirror.defineMode("yaml", function() {
         return 'meta';
       }
 
-      /* list separator */
+      /* ListTicket separator */
       if (state.inlineList > 0 && !esc && ch == ',') {
         stream.next();
         return 'meta';

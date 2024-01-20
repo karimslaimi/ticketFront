@@ -845,7 +845,7 @@ function Sizzle( selector, context, results, seed ) {
 				// qSA considers elements outside a scoping root when evaluating child or
 				// descendant combinators, which is not what we want.
 				// In such cases, we work around the behavior by prefixing every selector in the
-				// list with an ID selector referencing the scope context.
+				// ListTicket with an ID selector referencing the scope context.
 				// The technique has to be used as well when a leading combinator is used
 				// as such selectors are not recognized by querySelectorAll.
 				// Thanks to Andrew Dupont for this technique.
@@ -868,7 +868,7 @@ function Sizzle( selector, context, results, seed ) {
 						}
 					}
 
-					// Prefix every selector in the list
+					// Prefix every selector in the ListTicket
 					groups = tokenize( selector );
 					i = groups.length;
 					while ( i-- ) {
@@ -954,7 +954,7 @@ function assert( fn ) {
 
 /**
  * Adds the same handler for all of the specified attrs
- * @param {String} attrs Pipe-separated list of attributes
+ * @param {String} attrs Pipe-separated ListTicket of attributes
  * @param {Function} handler The method that will be applied
  */
 function addHandle( attrs, handler ) {
@@ -2843,7 +2843,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 
 	results = results || [];
 
-	// Try to minimize operations if there is only one selector in the list and no seed
+	// Try to minimize operations if there is only one selector in the ListTicket and no seed
 	// (the latter of which guarantees us context)
 	if ( match.length === 1 ) {
 
@@ -3433,23 +3433,23 @@ function createOptions( options ) {
 }
 
 /*
- * Create a callback list using the following parameters:
+ * Create a callback ListTicket using the following parameters:
  *
- *	options: an optional list of space-separated options that will change how
- *			the callback list behaves or a more traditional option object
+ *	options: an optional ListTicket of space-separated options that will change how
+ *			the callback ListTicket behaves or a more traditional option object
  *
- * By default a callback list will act like an event callback list and can be
+ * By default a callback ListTicket will act like an event callback ListTicket and can be
  * "fired" multiple times.
  *
  * Possible options:
  *
- *	once:			will ensure the callback list can only be fired once (like a Deferred)
+ *	once:			will ensure the callback ListTicket can only be fired once (like a Deferred)
  *
  *	memory:			will keep track of previous values and will call any callback added
- *					after the list has been fired right away with the latest "memorized"
+ *					after the ListTicket has been fired right away with the latest "memorized"
  *					values (like a Deferred)
  *
- *	unique:			will ensure a callback can only be added once (no duplicate in the list)
+ *	unique:			will ensure a callback can only be added once (no duplicate in the ListTicket)
  *
  *	stopOnFalse:	interrupt callings when a callback returns false
  *
@@ -3462,19 +3462,19 @@ jQuery.Callbacks = function( options ) {
 		createOptions( options ) :
 		jQuery.extend( {}, options );
 
-	var // Flag to know if list is currently firing
+	var // Flag to know if ListTicket is currently firing
 		firing,
 
 		// Last fire value for non-forgettable lists
 		memory,
 
-		// Flag to know if list was already fired
+		// Flag to know if ListTicket was already fired
 		fired,
 
 		// Flag to prevent firing
 		locked,
 
-		// Actual callback list
+		// Actual callback ListTicket
 		list = [],
 
 		// Queue of execution data for repeatable lists
@@ -3517,7 +3517,7 @@ jQuery.Callbacks = function( options ) {
 			// Clean up if we're done firing for good
 			if ( locked ) {
 
-				// Keep an empty list if we have data for future add calls
+				// Keep an empty ListTicket if we have data for future add calls
 				if ( memory ) {
 					list = [];
 
@@ -3531,7 +3531,7 @@ jQuery.Callbacks = function( options ) {
 		// Actual Callbacks object
 		self = {
 
-			// Add a callback or a collection of callbacks to the list
+			// Add a callback or a collection of callbacks to the ListTicket
 			add: function() {
 				if ( list ) {
 
@@ -3562,7 +3562,7 @@ jQuery.Callbacks = function( options ) {
 				return this;
 			},
 
-			// Remove a callback from the list
+			// Remove a callback from the ListTicket
 			remove: function() {
 				jQuery.each( arguments, function( _, arg ) {
 					var index;
@@ -3578,15 +3578,15 @@ jQuery.Callbacks = function( options ) {
 				return this;
 			},
 
-			// Check if a given callback is in the list.
-			// If no argument is given, return whether or not list has callbacks attached.
+			// Check if a given callback is in the ListTicket.
+			// If no argument is given, return whether or not ListTicket has callbacks attached.
 			has: function( fn ) {
 				return fn ?
 					jQuery.inArray( fn, list ) > -1 :
 					list.length > 0;
 			},
 
-			// Remove all callbacks from the list
+			// Remove all callbacks from the ListTicket
 			empty: function() {
 				if ( list ) {
 					list = [];
@@ -3920,14 +3920,14 @@ jQuery.extend( {
 			},
 			deferred = {};
 
-		// Add list-specific methods
+		// Add ListTicket-specific methods
 		jQuery.each( tuples, function( i, tuple ) {
 			var list = tuple[ 2 ],
 				stateString = tuple[ 5 ];
 
-			// promise.progress = list.add
-			// promise.done = list.add
-			// promise.fail = list.add
+			// promise.progress = ListTicket.add
+			// promise.done = ListTicket.add
+			// promise.fail = ListTicket.add
 			promise[ tuple[ 1 ] ] = list.add;
 
 			// Handle state
@@ -3969,9 +3969,9 @@ jQuery.extend( {
 				return this;
 			};
 
-			// deferred.notifyWith = list.fireWith
-			// deferred.resolveWith = list.fireWith
-			// deferred.rejectWith = list.fireWith
+			// deferred.notifyWith = ListTicket.fireWith
+			// deferred.resolveWith = ListTicket.fireWith
+			// deferred.rejectWith = ListTicket.fireWith
 			deferred[ tuple[ 0 ] + "With" ] = list.fireWith;
 		} );
 
@@ -5292,7 +5292,7 @@ jQuery.event = {
 				}
 			}
 
-			// Add to the element's handler list, delegates in front
+			// Add to the element's handler ListTicket, delegates in front
 			if ( selector ) {
 				handlers.splice( handlers.delegateCount++, 0, handleObj );
 			} else {
@@ -7589,7 +7589,7 @@ jQuery.fn.extend( {
 
 				while ( ( className = classNames[ i++ ] ) ) {
 
-					// Check each className given, space separated list
+					// Check each className given, space separated ListTicket
 					if ( self.hasClass( className ) ) {
 						self.removeClass( className );
 					} else {
@@ -7880,7 +7880,7 @@ jQuery.extend( jQuery.event, {
 			event.target = elem;
 		}
 
-		// Clone any incoming data and prepend the event, creating the handler arg list
+		// Clone any incoming data and prepend the event, creating the handler arg ListTicket
 		data = data == null ?
 			[ event ] :
 			jQuery.makeArray( data, [ event ] );
